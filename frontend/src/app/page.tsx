@@ -45,17 +45,35 @@ export default function HomePage() {
   }
 
   return (
-    <div className="space-y-20 nav:space-y-28">
-      <section className="mx-auto max-w-[680px] text-center">
-        <h1 className="text-[clamp(2.5rem,6vw,4.5rem)] font-semibold leading-[1.08] tracking-[-0.02em] text-apple-ink">
-          Translate a Korean menu
+    <div className="space-y-12 nav:space-y-16">
+      {/* Hero */}
+      <section className="mx-auto max-w-[640px] text-center">
+        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-kakao-yellow shadow-sm">
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#391B1B"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z" />
+          </svg>
+        </div>
+        <h1 className="text-[clamp(2rem,5vw,3rem)] font-bold leading-tight tracking-tight text-kakao-ink">
+          Korean Menu Translator
         </h1>
-        <p className="mx-auto mt-4 max-w-[520px] text-[clamp(1.125rem,2.5vw,1.5rem)] font-normal leading-snug text-apple-muted">
-          Snap a photo. Get clear dish names and details in your language.
+        <p className="mx-auto mt-3 max-w-[480px] text-lg text-kakao-muted">
+          Snap a photo of any Korean menu. Get dish names, descriptions, and
+          details in your language instantly.
         </p>
       </section>
 
-      <section className="mx-auto max-w-content space-y-8 text-left">
+      {/* Controls */}
+      <section className="mx-auto max-w-content space-y-6">
         <LanguageSelector value={language} onChange={setLanguage} />
         <ImageUploader onFileSelected={handleFile} disabled={loading} />
       </section>
@@ -64,7 +82,7 @@ export default function HomePage() {
 
       {error && (
         <div
-          className="rounded-2xl border border-black/[0.06] bg-apple-surface px-4 py-3 text-[17px] text-red-800"
+          className="mx-auto max-w-content rounded-kakao-sm border border-red-200 bg-red-50 px-4 py-3 text-base text-red-700"
           role="alert"
         >
           {error}
@@ -72,23 +90,26 @@ export default function HomePage() {
       )}
 
       {result && !loading && (
-        <section className="mx-auto max-w-content space-y-10 text-left">
+        <section className="mx-auto max-w-content space-y-8">
           {result.restaurant_name && (
-            <h2 className="text-[clamp(1.5rem,3vw,1.75rem)] font-semibold leading-tight tracking-[-0.015em] text-apple-ink">
-              {result.restaurant_name}
-            </h2>
+            <div className="flex items-center gap-3">
+              <div className="h-1 w-6 rounded-full bg-kakao-yellow" />
+              <h2 className="text-2xl font-bold text-kakao-ink">
+                {result.restaurant_name}
+              </h2>
+            </div>
           )}
           {result.items.length === 0 && (
-            <p className="max-w-[680px] text-[17px] text-apple-muted">
+            <p className="text-base text-kakao-muted">
               No menu items detected. Try a clearer photo.
             </p>
           )}
           {CATEGORY_ORDER.filter((c) => grouped[c]?.length).map((cat) => (
             <div key={cat} className="space-y-4">
-              <h3 className="text-xs font-medium uppercase tracking-[0.08em] text-apple-muted">
+              <h3 className="inline-block rounded-full bg-kakao-yellow/60 px-4 py-1 text-xs font-bold uppercase tracking-wider text-kakao-brown">
                 {CATEGORY_LABELS[cat]}
               </h3>
-              <div className="grid gap-5 min-[734px]:grid-cols-2 min-[734px]:gap-6">
+              <div className="grid gap-4 nav:grid-cols-2">
                 {grouped[cat].map((item, idx) => (
                   <MenuCard key={`${cat}-${idx}`} item={item} />
                 ))}

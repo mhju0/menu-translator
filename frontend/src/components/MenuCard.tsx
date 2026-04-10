@@ -1,40 +1,48 @@
 import type { MenuItem } from "@/lib/api";
 
-const SPICY_LABELS = ["", "🌶️", "🌶️🌶️", "🌶️🌶️🌶️"];
+const SPICY_LABELS = ["", "Mild", "Medium", "Hot"];
+const SPICY_COLORS = [
+  "",
+  "bg-orange-100 text-orange-700",
+  "bg-red-100 text-red-600",
+  "bg-red-200 text-red-800",
+];
 
 export default function MenuCard({ item }: { item: MenuItem }) {
   return (
-    <article className="rounded-2xl border border-black/[0.04] bg-apple-surface p-5 transition-transform duration-300 ease-apple hover:scale-[1.02]">
+    <article className="rounded-kakao border border-kakao-border bg-kakao-surface p-5 shadow-sm transition-all duration-200 ease-kakao hover:-translate-y-0.5 hover:shadow-md">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <h3 className="text-[19px] font-semibold leading-snug tracking-[-0.015em] text-apple-ink">
+          <h3 className="text-lg font-bold leading-snug text-kakao-ink">
             {item.original}
           </h3>
-          <p className="mt-1 text-[17px] font-normal leading-[1.47] text-apple-muted">
+          <p className="mt-1 text-base text-kakao-muted">
             {item.translated}
           </p>
         </div>
         {item.price != null && (
-          <span className="shrink-0 whitespace-nowrap rounded-full bg-black/[0.04] px-3 py-1.5 text-[14px] font-normal tabular-nums text-apple-ink">
-            ₩{item.price.toLocaleString()}
+          <span className="shrink-0 whitespace-nowrap rounded-kakao-sm bg-kakao-yellow px-3 py-1.5 text-sm font-bold tabular-nums text-kakao-brown">
+            {item.price.toLocaleString()}won
           </span>
         )}
       </div>
       {item.description && (
-        <p className="mt-3 max-w-[680px] text-[17px] font-normal leading-[1.47] text-apple-muted">
+        <p className="mt-3 rounded-kakao-sm bg-kakao-bg p-3 text-sm leading-relaxed text-kakao-muted">
           {item.description}
         </p>
       )}
-      <div className="mt-4 flex flex-wrap items-center gap-2">
+      <div className="mt-3 flex flex-wrap items-center gap-2">
         {item.spicy_level > 0 && (
-          <span className="rounded-full bg-black/[0.04] px-2.5 py-1 text-xs font-normal text-apple-ink">
-            {SPICY_LABELS[item.spicy_level] ?? "🌶️"}
+          <span
+            className={`rounded-full px-2.5 py-1 text-xs font-medium ${SPICY_COLORS[item.spicy_level] ?? "bg-red-100 text-red-700"}`}
+          >
+            {SPICY_LABELS[item.spicy_level] ?? "Hot"}
           </span>
         )}
         {item.allergens.map((a) => (
           <span
             key={a}
-            className="rounded-full bg-black/[0.04] px-2.5 py-1 text-xs font-normal text-apple-muted"
+            className="rounded-full border border-kakao-border px-2.5 py-1 text-xs text-kakao-muted"
           >
             {a}
           </span>

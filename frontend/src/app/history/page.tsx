@@ -37,20 +37,20 @@ export default function HistoryPage() {
   };
 
   return (
-    <div className="space-y-16 nav:space-y-20">
-      <section className="mx-auto max-w-[680px] text-center">
-        <h1 className="text-[clamp(2rem,5vw,3rem)] font-semibold leading-[1.1] tracking-[-0.02em] text-apple-ink">
-          Scan history
+    <div className="space-y-12 nav:space-y-16">
+      <section className="mx-auto max-w-[640px] text-center">
+        <h1 className="text-[clamp(1.75rem,4vw,2.5rem)] font-bold leading-tight tracking-tight text-kakao-ink">
+          Scan History
         </h1>
-        <p className="mx-auto mt-3 max-w-[520px] text-[1.125rem] font-normal leading-snug text-apple-muted">
+        <p className="mx-auto mt-3 max-w-[480px] text-base text-kakao-muted">
           Open a past scan to review items again.
         </p>
       </section>
 
-      <section className="mx-auto max-w-content space-y-6 text-left">
+      <section className="mx-auto max-w-content space-y-6">
         {error && (
           <div
-            className="rounded-2xl border border-black/[0.06] bg-apple-surface px-4 py-3 text-[17px] text-red-800"
+            className="rounded-kakao-sm border border-red-200 bg-red-50 px-4 py-3 text-base text-red-700"
             role="alert"
           >
             {error}
@@ -60,9 +60,24 @@ export default function HistoryPage() {
         {!items && !error && <LoadingSpinner />}
 
         {items && items.length === 0 && (
-          <p className="max-w-[680px] text-[17px] text-apple-muted">
-            No scans yet.
-          </p>
+          <div className="flex flex-col items-center gap-3 py-16">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-kakao-yellow/50">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#666"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+            <p className="text-base text-kakao-muted">No scans yet.</p>
+          </div>
         )}
 
         {items && items.length > 0 && (
@@ -72,19 +87,19 @@ export default function HistoryPage() {
                 <button
                   type="button"
                   onClick={() => openDetail(item.id)}
-                  className="flex w-full min-h-[44px] items-center justify-between rounded-2xl border border-black/[0.04] bg-apple-surface px-5 py-4 text-left transition-colors duration-300 ease-apple hover:border-black/[0.1]"
+                  className="flex w-full min-h-[56px] items-center justify-between rounded-kakao border border-kakao-border bg-kakao-surface px-5 py-4 text-left shadow-sm transition-all duration-200 ease-kakao hover:-translate-y-0.5 hover:shadow-md"
                 >
                   <div>
-                    <p className="text-[17px] font-normal text-apple-ink">
+                    <p className="text-base font-semibold text-kakao-ink">
                       {item.restaurant_name ?? "Untitled menu"}
                     </p>
-                    <p className="mt-1 text-[14px] text-apple-muted">
-                      {new Date(item.created_at).toLocaleString()} ·{" "}
-                      {item.item_count} items · {item.target_language}
+                    <p className="mt-1 text-sm text-kakao-muted">
+                      {new Date(item.created_at).toLocaleString()} &middot;{" "}
+                      {item.item_count} items &middot; {item.target_language}
                     </p>
                   </div>
-                  <span className="text-apple-link" aria-hidden>
-                    →
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-kakao-yellow text-kakao-brown">
+                    &rarr;
                   </span>
                 </button>
               </li>
@@ -95,11 +110,14 @@ export default function HistoryPage() {
         {loadingDetail && <LoadingSpinner />}
 
         {selected && (
-          <div className="space-y-6 border-t border-black/[0.06] pt-10">
-            <h2 className="text-[clamp(1.25rem,2.5vw,1.5rem)] font-semibold leading-tight tracking-[-0.015em] text-apple-ink">
-              {selected.result.restaurant_name ?? "Menu"}
-            </h2>
-            <div className="grid gap-5 min-[734px]:grid-cols-2 min-[734px]:gap-6">
+          <div className="space-y-6 border-t border-kakao-border pt-8">
+            <div className="flex items-center gap-3">
+              <div className="h-1 w-6 rounded-full bg-kakao-yellow" />
+              <h2 className="text-xl font-bold text-kakao-ink">
+                {selected.result.restaurant_name ?? "Menu"}
+              </h2>
+            </div>
+            <div className="grid gap-4 nav:grid-cols-2">
               {selected.result.items.map((item, idx) => (
                 <MenuCard key={idx} item={item} />
               ))}

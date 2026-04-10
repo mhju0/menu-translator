@@ -9,35 +9,44 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: [
+          "Pretendard",
           "-apple-system",
           "BlinkMacSystemFont",
-          '"SF Pro Display"',
-          '"SF Pro Text"',
+          "system-ui",
+          "Roboto",
           '"Helvetica Neue"',
-          "Helvetica",
           "Arial",
           "sans-serif",
         ],
       },
       colors: {
-        apple: {
-          bg: "#fbfbfd",
-          surface: "#ffffff",
-          ink: "#1d1d1f",
-          muted: "#86868b",
-          link: "#0066cc",
-          accent: "#0071e3",
-          "accent-hover": "#0077ed",
+        kakao: {
+          yellow: "#FEE500",
+          "yellow-hover": "#F5DC00",
+          brown: "#391B1B",
+          ink: "#191919",
+          muted: "#666666",
+          bg: "#F6F6F6",
+          surface: "#FFFFFF",
+          border: "#E5E5E5",
+          "border-hover": "#CCCCCC",
+          chat: "#B2E1FF",
+          accent: "#3C1E1E",
         },
       },
       maxWidth: {
-        content: "980px",
+        content: "960px",
       },
       screens: {
-        nav: "834px",
+        nav: "768px",
+      },
+      borderRadius: {
+        kakao: "16px",
+        "kakao-sm": "12px",
+        "kakao-lg": "20px",
       },
       transitionTimingFunction: {
-        apple: "cubic-bezier(0.25, 0.1, 0.25, 1)",
+        kakao: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
     },
   },

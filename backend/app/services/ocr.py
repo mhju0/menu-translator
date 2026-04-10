@@ -1,8 +1,8 @@
+import asyncio
 import os
-import time
 from typing import List
 
-import requests
+import httpx
 
 POLL_INTERVAL_SECONDS = 1.0
 MAX_POLL_ATTEMPTS = 30
@@ -19,10 +19,11 @@ def _get_config() -> tuple[str, str]:
     return key, endpoint.rstrip("/")
 
 
-def extract_text_from_image(image_bytes: bytes) -> str:
+async def extract_text_from_image(image_bytes: bytes) -> str:
     """Run Azure Computer Vision Read API on the given image bytes.
 
     Returns the concatenated text lines (top-to-bottom).
+    Uses async httpx to avoid blocking the event loop.
     """
     key, endpoint = _get_config()
 
@@ -31,27 +32,29 @@ def extract_text_from_image(image_bytes: bytes) -> str:
         "Ocp-Apim-Subscription-Key": key,
         "Content-Type": "application/octet-stream",
     }
-    response = requests.post(submit_url, headers=headers, data=image_bytes, timeout=30)
-    if response.status_code != 202:
-        raise RuntimeError(
-            f"Azure CV submit failed: {response.status_code} {response.text}"
-        )
 
-    operation_url = response.headers.get("Operation-Location")
-    if not operation_url:
-        raise RuntimeError("Azure CV did not return Operation-Location header")
+    async with httpx.AsyncClient(timeout=30) as client:
+        response = await client.post(submit_url, headers=headers, content=image_bytes)
+        if response.status_code != 202:
+            raise RuntimeError(
+                f"Azure CV submit failed: {response.status_code} {response.text}"
+            )
 
-    poll_headers = {"Ocp-Apim-Subscription-Key": key}
-    for _ in range(MAX_POLL_ATTEMPTS):
-        time.sleep(POLL_INTERVAL_SECONDS)
-        poll = requests.get(operation_url, headers=poll_headers, timeout=30)
-        poll.raise_for_status()
-        payload = poll.json()
-        status = payload.get("status")
-        if status == "succeeded":
-            return _extract_lines(payload)
-        if status == "failed":
-            raise RuntimeError("Azure CV OCR failed")
+        operation_url = response.headers.get("Operation-Location")
+        if not operation_url:
+            raise RuntimeError("Azure CV did not return Operation-Location header")
+
+        poll_headers = {"Ocp-Apim-Subscription-Key": key}
+        for _ in range(MAX_POLL_ATTEMPTS):
+            await asyncio.sleep(POLL_INTERVAL_SECONDS)
+            poll = await client.get(operation_url, headers=poll_headers)
+            poll.raise_for_status()
+            payload = poll.json()
+            status = payload.get("status")
+            if status == "succeeded":
+                return _extract_lines(payload)
+            if status == "failed":
+                raise RuntimeError("Azure CV OCR failed")
 
     raise TimeoutError("Azure CV OCR polling timed out")
 

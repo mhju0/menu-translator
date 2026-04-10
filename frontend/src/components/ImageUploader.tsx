@@ -43,10 +43,10 @@ export default function ImageUploader({ onFileSelected, disabled }: Props) {
       }}
       onDragLeave={() => setDragActive(false)}
       onDrop={onDrop}
-      className={`flex min-h-[200px] flex-col items-center justify-center gap-3 rounded-2xl border border-black/[0.08] bg-apple-surface px-6 py-14 text-center transition-colors duration-300 ease-apple ${
+      className={`flex min-h-[200px] flex-col items-center justify-center gap-3 rounded-kakao border-2 border-dashed px-6 py-14 text-center transition-all duration-200 ease-kakao ${
         dragActive
-          ? "border-apple-accent/40 bg-black/[0.02]"
-          : "hover:border-black/[0.12]"
+          ? "border-kakao-yellow bg-kakao-yellow/10"
+          : "border-kakao-border bg-kakao-surface hover:border-kakao-border-hover"
       } ${disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
     >
       <input
@@ -66,15 +66,31 @@ export default function ImageUploader({ onFileSelected, disabled }: Props) {
           src={previewUrl}
           alt="Selected menu photo"
           loading="lazy"
-          className="max-h-72 w-full max-w-2xl rounded-xl object-contain"
+          className="max-h-72 w-full max-w-2xl rounded-kakao-sm object-contain"
         />
       ) : (
         <>
-          <p className="text-[19px] font-normal text-apple-ink">
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-kakao-yellow">
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#391B1B"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+              <circle cx="8.5" cy="8.5" r="1.5" />
+              <polyline points="21 15 16 10 5 21" />
+            </svg>
+          </div>
+          <p className="text-lg font-semibold text-kakao-ink">
             Add a menu photo
           </p>
-          <p className="text-[14px] text-apple-muted">
-            Click or drag here · JPG, PNG, HEIC
+          <p className="text-sm text-kakao-muted">
+            Click or drag here &middot; JPG, PNG, WebP, HEIC
           </p>
         </>
       )}
