@@ -2,6 +2,11 @@
 
 한국어 음식 메뉴 사진을 업로드하면 다국어로 번역된 메뉴 정보를 제공하는 풀스택 웹 애플리케이션입니다.
 
+## License
+
+Copyright (c) 2026 Michael Ju. All rights reserved.
+No license is granted for use, copying, modification, or distribution of this code as of 2026-07-30. This repository is public for portfolio review purposes only.
+
 ## 소개
 
 사용자가 한국 식당 메뉴 사진을 촬영하여 업로드하면, Azure Computer Vision으로 텍스트를 추출하고 Azure OpenAI를 통해 각 메뉴 항목을 분석합니다. 원문, 번역명, 설명, 가격, 매운맛 정도, 알레르기 성분, 카테고리 등 구조화된 정보를 제공합니다.
